@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ReactiveTest</string>
+    <string name="detail_activity">Robot Detail</string>
+    <string name="title_activity_master">My Favorite Robots</string>
+    <string name="error_load_robots">Error: no fue posible cargar la lista de robots</string>
+    <string name="robo_description">Imagen de perfil de un robot</string>
 </resources>
