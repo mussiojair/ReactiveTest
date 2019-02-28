@@ -20,14 +20,10 @@ public class RobotsAdapter extends RecyclerView.Adapter<RobotsAdapter.RobotViewH
     private Context context;
     private OnClickRobotsListener listener;
 
-    public RobotsAdapter(Context context, OnClickRobotsListener listener) {
+    RobotsAdapter(Context context, OnClickRobotsListener listener) {
         this.context = context;
         this.listener = listener;
         items = new ArrayList<>();
-    }
-
-    public List<Robot> getItems() {
-        return items;
     }
 
     public void setItems(List<Robot> items) {
@@ -45,12 +41,7 @@ public class RobotsAdapter extends RecyclerView.Adapter<RobotsAdapter.RobotViewH
     public void onBindViewHolder(@NonNull RobotViewHolder viewHolder, int position) {
         final Robot robot = items.get(position);
         viewHolder.name.setText(robot.name);
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                listener.onClick(robot);
-            }
-        });
+        viewHolder.itemView.setOnClickListener(view -> listener.onClick(robot));
     }
 
     @Override
@@ -59,13 +50,13 @@ public class RobotsAdapter extends RecyclerView.Adapter<RobotsAdapter.RobotViewH
     }
 
 
-    public class RobotViewHolder extends RecyclerView.ViewHolder {
+    class RobotViewHolder extends RecyclerView.ViewHolder {
 
         TextView name;
 
-        public RobotViewHolder(@NonNull View itemView) {
+        RobotViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = (TextView) itemView.findViewById(R.id.name);
+            name = itemView.findViewById(R.id.name);
         }
     }
 
