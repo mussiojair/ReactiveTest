@@ -8,13 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.mussiocardenas.reactivetest.R;
 import com.example.mussiocardenas.reactivetest.ReactiveTestApp;
 import com.example.mussiocardenas.reactivetest.components.detail.DetailActivity;
-import com.example.mussiocardenas.reactivetest.domain.AppComponent;
 import com.example.mussiocardenas.reactivetest.domain.Robot;
 import com.example.mussiocardenas.reactivetest.domain.repositories.RobotsRepository;
 import com.google.gson.Gson;
@@ -33,6 +31,8 @@ public class MasterActivity extends AppCompatActivity implements RobotsAdapter.O
     @Inject Gson gson;
 
     @BindView(R.id.recycler) RecyclerView recycler;
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.fab) FloatingActionButton fab;
 
     private RobotsAdapter robotsAdapter;
 
@@ -43,17 +43,12 @@ public class MasterActivity extends AppCompatActivity implements RobotsAdapter.O
         ButterKnife.bind(this);
         ReactiveTestApp.getApplication().getAppComponent().inject(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Updating robots...", Snackbar.LENGTH_SHORT)
-                        .setAction("Action", null).show();
-                loadData();
-            }
+        fab.setOnClickListener(view -> {
+            Snackbar.make(view, "Updating robots...", Snackbar.LENGTH_SHORT)
+                    .setAction("Action", null).show();
+            loadData();
         });
         configureViews();
     }
@@ -69,11 +64,7 @@ public class MasterActivity extends AppCompatActivity implements RobotsAdapter.O
     private void loadData(){
         robotsRepository.getRobots()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe( list -> {
-                    robotsAdapter.setItems(list);
-                }, error -> {
-                    Toast.makeText(this, getString(R.string.error_load_robots), Toast.LENGTH_LONG).show();
-                });
+                .subscribe( list -> robotsAdapter.setItems(list), error -> Toast.makeText(this, getString(R.string.error_load_robots), Toast.LENGTH_LONG).show());
     }
 
     @Override
